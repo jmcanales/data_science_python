@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyData Mastery — El Arte de la Ciencia de Datos</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Blog profesional de Ciencia de Datos en Python. Guías profundas sobre Pandas, NumPy, Matplotlib y Seaborn basadas en documentación oficial.">
+    <meta name="keywords" content="Python, Data Science, Pandas, NumPy, Matplotlib, Seaborn, Machine Learning, Ciencia de Datos, Tutorial Python">
+    <meta name="author" content="Tu Nombre">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Spanish">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://TU-USUARIO.github.io/pydata-mastery-blog/">
+    <meta property="og:title" content="PyData Mastery — El Arte de la Ciencia de Datos">
+    <meta property="og:description" content="Domina Pandas, NumPy, Matplotlib y Seaborn con guías profundas basadas en documentación oficial.">
+    <meta property="og:image" content="https://TU-USUARIO.github.io/pydata-mastery-blog/preview.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://TU-USUARIO.github.io/pydata-mastery-blog/">
+    <meta property="twitter:title" content="PyData Mastery — El Arte de la Ciencia de Datos">
+    <meta property="twitter:description" content="Domina Pandas, NumPy, Matplotlib y Seaborn con guías profundas basadas en documentación oficial.">
+    <meta property="twitter:image" content="https://TU-USUARIO.github.io/pydata-mastery-blog/preview.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-navy: #0a1628;
+            --rich-teal: #1a4d5e;
+            --accent-gold: #d4af37;
+            --accent-coral: #ff6b6b;
+            --soft-cream: #faf8f3;
+            --code-bg: #1e2938;
+            --gradient-1: linear-gradient(135deg, #0a1628 0%, #1a4d5e 100%);
+            --gradient-2: linear-gradient(45deg, #d4af37 0%, #ff6b6b 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--soft-cream);
+            color: var(--deep-navy);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            color: var(--soft-cream);
+            margin-bottom: 1rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--accent-gold);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeInUp 1.2s ease-out 0.3s backwards;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-20px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .scroll-indicator::after {
+            content: '↓';
+            font-size: 2rem;
+            color: var(--accent-gold);
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid var(--accent-gold);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--soft-cream);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .intro-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--deep-navy);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .intro-section p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--rich-teal);
+        }
+
+        /* Article Grid */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .article-header {
+            padding: 2rem;
+            background: var(--gradient-1);
+            color: white;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .article-card:nth-child(2) .article-header {
+            background: linear-gradient(135deg, #1a4d5e 0%, #2a6d7e 100%);
+        }
+
+        .article-card:nth-child(3) .article-header {
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+        }
+
+        .article-card:nth-child(4) .article-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        .article-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .article-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content {
+            padding: 2rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1rem;
+            color: #444;
+            font-size: 1.05rem;
+        }
+
+        .article-content ul {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.8rem;
+            color: #555;
+        }
+
+        .article-content strong {
+            color: var(--deep-navy);
+            font-weight: 700;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .code-block pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #e6e6e6;
+            line-height: 1.6;
+        }
+
+        .code-comment {
+            color: #7c8c9e;
+        }
+
+        .code-keyword {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        .code-function {
+            color: #ffd93d;
+        }
+
+        .code-string {
+            color: #6bcf7f;
+        }
+
+        .code-number {
+            color: #d4af37;
+        }
+
+        /* Tips Section */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+            border-left: 5px solid var(--accent-coral);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip-box h4 {
+            color: var(--accent-coral);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gradient-1);
+            color: var(--soft-cream);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--accent-coral);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+        }
+
+        /* Animation delays for staggered effect */
+        .article-card:nth-child(1) { animation: fadeInUp 0.6s ease-out 0.1s backwards; }
+        .article-card:nth-child(2) { animation: fadeInUp 0.6s ease-out 0.2s backwards; }
+        .article-card:nth-child(3) { animation: fadeInUp 0.6s ease-out 0.3s backwards; }
+        .article-card:nth-child(4) { animation: fadeInUp 0.6s ease-out 0.4s backwards; }
+
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>PyData Mastery</h1>
+            <p class="subtitle">El Arte de la Ciencia de Datos</p>
+        </div>
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#pandas">Pandas</a></li>
+            <li><a href="#numpy">NumPy</a></li>
+            <li><a href="#matplotlib">Matplotlib</a></li>
+            <li><a href="#seaborn">Seaborn</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <section class="intro-section">
+            <h2>Dominando las Herramientas Fundamentales</h2>
+            <p>Guías profundas y prácticas basadas en la documentación oficial, diseñadas para transformar tu forma de trabajar con datos en Python.</p>
+        </section>
+
+        <!-- Articles Grid -->
+        <div class="articles-grid">
+            <!-- Pandas Article -->
+            <article class="article-card" id="pandas">
+                <div class="article-header">
+                    <span class="article-tag">Pandas</span>
+                    <h3>Manipulación Avanzada de DataFrames</h3>
+                </div>
+                <div class="article-content">
+                    <p>Pandas es la biblioteca fundamental para análisis de datos en Python. Descubre técnicas avanzadas directamente de la documentación oficial.</p>
+                    
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">Indexación Eficiente</h4>
+                    <p>El poder real de Pandas reside en sus múltiples métodos de indexación:</p>
+                    <ul>
+                        <li><strong>.loc[]</strong> - Indexación basada en etiquetas, ideal para selecciones explícitas y legibles</li>
+                        <li><strong>.iloc[]</strong> - Indexación basada en posición entera, perfecta para operaciones numéricas</li>
+                        <li><strong>.at[] y .iat[]</strong> - Acceso ultra-rápido a valores escalares individuales</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre><span class="code-comment"># Técnicas de indexación avanzada</span>
+<span class="code-keyword">import</span> pandas <span class="code-keyword">as</span> pd
+
+<span class="code-comment"># Crear DataFrame de ejemplo</span>
+df = pd.DataFrame({
+    <span class="code-string">'nombre'</span>: [<span class="code-string">'Ana'</span>, <span class="code-string">'Bruno'</span>, <span class="code-string">'Carlos'</span>],
+    <span class="code-string">'edad'</span>: [<span class="code-number">25</span>, <span class="code-number">30</span>, <span class="code-number">35</span>],
+    <span class="code-string">'ciudad'</span>: [<span class="code-string">'Madrid'</span>, <span class="code-string">'Barcelona'</span>, <span class="code-string">'Valencia'</span>]
+}, index=[<span class="code-string">'a'</span>, <span class="code-string">'b'</span>, <span class="code-string">'c'</span>])
+
+<span class="code-comment"># Selección por etiqueta</span>
+resultado = df.<span class="code-function">loc</span>[<span class="code-string">'a':'b'</span>, <span class="code-string">'nombre'</span>:<span class="code-string">'edad'</span>]
+
+<span class="code-comment"># Selección por posición</span>
+resultado = df.<span class="code-function">iloc</span>[<span class="code-number">0</span>:<span class="code-number">2</span>, <span class="code-number">0</span>:<span class="code-number">2</span>]</pre>
+                    </div>
+
+                    <div class="tip-box">
+                        <h4>💡 Consejo de Rendimiento</h4>
+                        <p>Según la documentación oficial, usar <code>.at[]</code> en lugar de <code>.loc[]</code> para acceder a valores escalares individuales puede ser hasta 100 veces más rápido en DataFrames grandes.</p>
+                    </div>
+
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">GroupBy: El Poder de la Agregación</h4>
+                    <p>El método GroupBy permite la estrategia "split-apply-combine" documentada exhaustivamente en Pandas:</p>
+
+                    <div class="code-block">
+                        <pre><span class="code-comment"># Agregaciones múltiples con agg()</span>
+resultado = df.<span class="code-function">groupby</span>(<span class="code-string">'categoria'</span>).<span class="code-function">agg</span>({
+    <span class="code-string">'ventas'</span>: [<span class="code-string">'sum'</span>, <span class="code-string">'mean'</span>, <span class="code-string">'std'</span>],
+    <span class="code-string">'clientes'</span>: <span class="code-string">'count'</span>,
+    <span class="code-string">'precio'</span>: [<span class="code-string">'min'</span>, <span class="code-string">'max'</span>]
+})
+
+<span class="code-comment"># Transformaciones personalizadas</span>
+df[<span class="code-string">'zscore'</span>] = df.<span class="code-function">groupby</span>(<span class="code-string">'grupo'</span>)[<span class="code-string">'valor'</span>].<span class="code-function">transform</span>(
+    <span class="code-keyword">lambda</span> x: (x - x.<span class="code-function">mean</span>()) / x.<span class="code-function">std</span>()
+)</pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- NumPy Article -->
+            <article class="article-card" id="numpy">
+                <div class="article-header">
+                    <span class="article-tag">NumPy</span>
+                    <h3>Computación Numérica de Alto Rendimiento</h3>
+                </div>
+                <div class="article-content">
+                    <p>NumPy es el núcleo de la computación científica en Python, proporcionando arrays multidimensionales y operaciones matemáticas ultra-rápidas.</p>
+                    
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">Broadcasting: Magia de Arrays</h4>
+                    <p>El broadcasting es una de las características más poderosas de NumPy, permitiendo operaciones entre arrays de diferentes formas:</p>
+
+                    <div class="code-block">
+                        <pre><span class="code-keyword">import</span> numpy <span class="code-keyword">as</span> np
+
+<span class="code-comment"># Broadcasting básico</span>
+a = np.<span class="code-function">array</span>([[<span class="code-number">1</span>, <span class="code-number">2</span>, <span class="code-number">3</span>],
+              [<span class="code-number">4</span>, <span class="code-number">5</span>, <span class="code-number">6</span>]])
+
+<span class="code-comment"># Suma con escalar (broadcasting automático)</span>
+resultado = a + <span class="code-number">10</span>  <span class="code-comment"># [[11, 12, 13], [14, 15, 16]]</span>
+
+<span class="code-comment"># Broadcasting con array 1D</span>
+b = np.<span class="code-function">array</span>([<span class="code-number">10</span>, <span class="code-number">20</span>, <span class="code-number">30</span>])
+resultado = a + b  <span class="code-comment"># [[11, 22, 33], [14, 25, 36]]</span>
+
+<span class="code-comment"># Normalización por columnas (patrón común)</span>
+media = a.<span class="code-function">mean</span>(axis=<span class="code-number">0</span>)
+std = a.<span class="code-function">std</span>(axis=<span class="code-number">0</span>)
+normalizado = (a - media) / std</pre>
+                    </div>
+
+                    <div class="tip-box">
+                        <h4>⚡ Optimización Crítica</h4>
+                        <p>La documentación de NumPy enfatiza: las operaciones vectorizadas son 10-100x más rápidas que los bucles Python equivalentes. Siempre busca eliminar bucles explícitos usando broadcasting y funciones universales (ufuncs).</p>
+                    </div>
+
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">Indexación Avanzada y Fancy Indexing</h4>
+
+                    <div class="code-block">
+                        <pre><span class="code-comment"># Fancy indexing con arrays booleanos</span>
+datos = np.<span class="code-function">random</span>.<span class="code-function">randn</span>(<span class="code-number">100</span>)
+outliers = datos[np.<span class="code-function">abs</span>(datos) > <span class="code-number">2</span>]
+
+<span class="code-comment"># Indexación con arrays de enteros</span>
+indices = np.<span class="code-function">array</span>([<span class="code-number">0</span>, <span class="code-number">2</span>, <span class="code-number">4</span>])
+seleccion = datos[indices]
+
+<span class="code-comment"># Combinación poderosa: where</span>
+resultado = np.<span class="code-function">where</span>(datos > <span class="code-number">0</span>, datos, <span class="code-number">0</span>)  <span class="code-comment"># ReLU</span></pre>
+                    </div>
+
+                    <ul>
+                        <li><strong>Álgebra Lineal</strong> - Módulo linalg para operaciones matriciales eficientes</li>
+                        <li><strong>FFT</strong> - Transformada rápida de Fourier optimizada</li>
+                        <li><strong>Random</strong> - Generación de números aleatorios de alta calidad</li>
+                        <li><strong>Structured Arrays</strong> - Arrays con campos nombrados tipo registro</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Matplotlib Article -->
+            <article class="article-card" id="matplotlib">
+                <div class="article-header">
+                    <span class="article-tag">Matplotlib</span>
+                    <h3>Visualización Científica Profesional</h3>
+                </div>
+                <div class="article-content">
+                    <p>Matplotlib es la biblioteca de visualización más completa de Python, con dos interfaces principales: pyplot (estilo MATLAB) y orientada a objetos.</p>
+                    
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">API Orientada a Objetos vs pyplot</h4>
+                    <p>La documentación oficial recomienda fuertemente la API orientada a objetos para mayor control y flexibilidad:</p>
+
+                    <div class="code-block">
+                        <pre><span class="code-keyword">import</span> matplotlib.pyplot <span class="code-keyword">as</span> plt
+
+<span class="code-comment"># Estilo Orientado a Objetos (RECOMENDADO)</span>
+fig, ax = plt.<span class="code-function">subplots</span>(figsize=(<span class="code-number">10</span>, <span class="code-number">6</span>))
+
+ax.<span class="code-function">plot</span>(x, y, label=<span class="code-string">'Datos'</span>, linewidth=<span class="code-number">2</span>, color=<span class="code-string">'#2E86AB'</span>)
+ax.<span class="code-function">set_xlabel</span>(<span class="code-string">'Tiempo (s)'</span>, fontsize=<span class="code-number">12</span>)
+ax.<span class="code-function">set_ylabel</span>(<span class="code-string">'Amplitud'</span>, fontsize=<span class="code-number">12</span>)
+ax.<span class="code-function">set_title</span>(<span class="code-string">'Análisis Temporal'</span>, fontsize=<span class="code-number">14</span>, fontweight=<span class="code-string">'bold'</span>)
+ax.<span class="code-function">grid</span>(<span class="code-keyword">True</span>, alpha=<span class="code-number">0.3</span>)
+ax.<span class="code-function">legend</span>(frameon=<span class="code-keyword">False</span>)
+
+<span class="code-comment"># Subplots complejos</span>
+fig, (ax1, ax2) = plt.<span class="code-function">subplots</span>(<span class="code-number">1</span>, <span class="code-number">2</span>, figsize=(<span class="code-number">15</span>, <span class="code-number">5</span>))
+ax1.<span class="code-function">scatter</span>(x, y1, alpha=<span class="code-number">0.6</span>)
+ax2.<span class="code-function">bar</span>(categorias, valores)</pre>
+                    </div>
+
+                    <div class="tip-box">
+                        <h4>🎨 Estilo y Estética</h4>
+                        <p>Matplotlib incluye estilos predefinidos profesionales. Usa <code>plt.style.use('seaborn-v0_8-darkgrid')</code> o crea tu propio estilo con rcParams para gráficos consistentes y publicables.</p>
+                    </div>
+
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">Personalización Avanzada</h4>
+
+                    <div class="code-block">
+                        <pre><span class="code-comment"># Configuración global con rcParams</span>
+plt.<span class="code-function">rcParams</span>.<span class="code-function">update</span>({
+    <span class="code-string">'font.size'</span>: <span class="code-number">11</span>,
+    <span class="code-string">'font.family'</span>: <span class="code-string">'serif'</span>,
+    <span class="code-string">'axes.labelsize'</span>: <span class="code-number">12</span>,
+    <span class="code-string">'axes.titlesize'</span>: <span class="code-number">14</span>,
+    <span class="code-string">'figure.dpi'</span>: <span class="code-number">100</span>,
+    <span class="code-string">'savefig.dpi'</span>: <span class="code-number">300</span>
+})
+
+<span class="code-comment"># Anotaciones y flechas</span>
+ax.<span class="code-function">annotate</span>(<span class="code-string">'Punto crítico'</span>, 
+            xy=(<span class="code-number">5</span>, <span class="code-number">10</span>),
+            xytext=(<span class="code-number">6</span>, <span class="code-number">12</span>),
+            arrowprops=<span class="code-function">dict</span>(arrowstyle=<span class="code-string">'->'</span>, color=<span class="code-string">'red'</span>))</pre>
+                    </div>
+
+                    <ul>
+                        <li><strong>Colormaps</strong> - Paletas científicas (viridis, plasma) para datos continuos</li>
+                        <li><strong>3D Plots</strong> - Visualizaciones tridimensionales con mplot3d</li>
+                        <li><strong>Animaciones</strong> - Módulo animation para visualizaciones dinámicas</li>
+                        <li><strong>Backends</strong> - Múltiples opciones de renderizado (Agg, TkAgg, Qt5Agg)</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Seaborn Article -->
+            <article class="article-card" id="seaborn">
+                <div class="article-header">
+                    <span class="article-tag">Seaborn</span>
+                    <h3>Visualización Estadística Elegante</h3>
+                </div>
+                <div class="article-content">
+                    <p>Seaborn eleva Matplotlib con una API de alto nivel, estilos hermosos por defecto y funcionalidad estadística integrada.</p>
+                    
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">Gráficos Relacionales y Distribuciones</h4>
+
+                    <div class="code-block">
+                        <pre><span class="code-keyword">import</span> seaborn <span class="code-keyword">as</span> sns
+<span class="code-keyword">import</span> matplotlib.pyplot <span class="code-keyword">as</span> plt
+
+<span class="code-comment"># Configurar tema elegante</span>
+sns.<span class="code-function">set_theme</span>(style=<span class="code-string">'whitegrid'</span>, palette=<span class="code-string">'deep'</span>)
+
+<span class="code-comment"># Scatter plot con regresión automática</span>
+sns.<span class="code-function">lmplot</span>(data=df, x=<span class="code-string">'peso'</span>, y=<span class="code-string">'altura'</span>, 
+           hue=<span class="code-string">'genero'</span>, height=<span class="code-number">6</span>)
+
+<span class="code-comment"># Distribuciones con histograma y KDE</span>
+sns.<span class="code-function">histplot</span>(data=df, x=<span class="code-string">'edad'</span>, kde=<span class="code-keyword">True</span>, 
+            bins=<span class="code-number">30</span>, color=<span class="code-string">'#E63946'</span>)
+
+<span class="code-comment"># Violin plot para comparaciones</span>
+sns.<span class="code-function">violinplot</span>(data=df, x=<span class="code-string">'categoria'</span>, y=<span class="code-string">'valor'</span>,
+               split=<span class="code-keyword">True</span>, inner=<span class="code-string">'quartile'</span>)</pre>
+                    </div>
+
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">FacetGrid: Visualizaciones Múltiples</h4>
+                    <p>Una de las características más poderosas documentadas en Seaborn es FacetGrid para crear matrices de gráficos condicionados:</p>
+
+                    <div class="code-block">
+                        <pre><span class="code-comment"># Crear grid de subplots automático</span>
+g = sns.<span class="code-function">FacetGrid</span>(df, col=<span class="code-string">'mes'</span>, row=<span class="code-string">'año'</span>, 
+                  height=<span class="code-number">3</span>, aspect=<span class="code-number">1.2</span>)
+
+g.<span class="code-function">map</span>(sns.scatterplot, <span class="code-string">'x'</span>, <span class="code-string">'y'</span>, alpha=<span class="code-number">0.7</span>)
+g.<span class="code-function">add_legend</span>()
+
+<span class="code-comment"># PairGrid para relaciones multivariadas</span>
+g = sns.<span class="code-function">PairGrid</span>(df, vars=[<span class="code-string">'var1'</span>, <span class="code-string">'var2'</span>, <span class="code-string">'var3'</span>])
+g.<span class="code-function">map_diag</span>(sns.histplot)
+g.<span class="code-function">map_offdiag</span>(sns.scatterplot)</pre>
+                    </div>
+
+                    <div class="tip-box">
+                        <h4>📊 Paletas de Color Profesionales</h4>
+                        <p>Seaborn proporciona paletas científicamente diseñadas: usa paletas cualitativas como 'Set2' o 'tab10' para categorías, secuenciales como 'Blues' o 'YlOrRd' para datos continuos, y divergentes como 'RdBu' para datos que divergen desde un punto central.</p>
+                    </div>
+
+                    <h4 style="font-family: 'Playfair Display', serif; color: var(--deep-navy); margin: 1.5rem 0 1rem;">Heatmaps y Matrices</h4>
+
+                    <div class="code-block">
+                        <pre><span class="code-comment"># Matriz de correlación profesional</span>
+corr = df.<span class="code-function">corr</span>()
+sns.<span class="code-function">heatmap</span>(corr, annot=<span class="code-keyword">True</span>, cmap=<span class="code-string">'coolwarm'</span>,
+            center=<span class="code-number">0</span>, square=<span class="code-keyword">True</span>,
+            linewidths=<span class="code-number">1</span>, cbar_kws={<span class="code-string">'shrink'</span>: <span class="code-number">0.8</span>})
+
+<span class="code-comment"># Clustermap con jerarquía</span>
+sns.<span class="code-function">clustermap</span>(df, method=<span class="code-string">'ward'</span>, 
+               cmap=<span class="code-string">'viridis'</span>, figsize=(<span class="code-number">12</span>, <span class="code-number">10</span>))</pre>
+                    </div>
+
+                    <ul>
+                        <li><strong>Categorical plots</strong> - boxplot, violinplot, swarmplot para datos categóricos</li>
+                        <li><strong>Regression plots</strong> - regplot y lmplot con intervalos de confianza</li>
+                        <li><strong>Themes</strong> - darkgrid, whitegrid, dark, white, ticks</li>
+                        <li><strong>Color palettes</strong> - Integración con ColorBrewer y paletas perceptualmente uniformes</li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+
+        <!-- Closing Section -->
+        <section class="intro-section">
+            <h2>Recursos Adicionales</h2>
+            <p>Todo el contenido de este blog está basado directamente en las documentaciones oficiales de cada biblioteca. Para profundizar más, visita:</p>
+            <div style="margin-top: 2rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                <a href="https://pandas.pydata.org/docs/" style="color: var(--accent-coral); text-decoration: none; font-weight: 600; font-size: 1.1rem;">📚 Pandas Docs</a>
+                <a href="https://numpy.org/doc/" style="color: var(--accent-coral); text-decoration: none; font-weight: 600; font-size: 1.1rem;">🔢 NumPy Docs</a>
+                <a href="https://matplotlib.org/stable/contents.html" style="color: var(--accent-coral); text-decoration: none; font-weight: 600; font-size: 1.1rem;">📈 Matplotlib Docs</a>
+                <a href="https://seaborn.pydata.org/" style="color: var(--accent-coral); text-decoration: none; font-weight: 600; font-size: 1.1rem;">🎨 Seaborn Docs</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>PyData Mastery — Dominando la Ciencia de Datos en Python</p>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 1rem;">Contenido curado de las documentaciones oficiales • 2025</p>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const hero = document.querySelector('.hero-content');
+            const scrolled = window.pageYOffset;
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                hero.style.opacity = 1 - (scrolled / window.innerHeight);
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all article cards
+        document.querySelectorAll('.article-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
