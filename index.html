@@ -996,6 +996,505 @@ categorias = np.<span class="token-function">where</span>(valores >= <span class
 <span class="token-function">print</span>(categorias)</code></pre>
                 </section>
 
+                <!-- MATPLOTLIB -->
+                <section id="matplotlib-intro">
+                    <h2>📊 Matplotlib: Visualización Profesional</h2>
+                    
+                    <p>
+                        Matplotlib es la biblioteca de visualización más usada en Python. Tiene mala fama por ser "fea", pero eso es porque la gente usa la API incorrecta. Hay dos APIs: pyplot (estilo MATLAB) y orientada a objetos. <strong>Usa siempre la orientada a objetos</strong>.
+                    </p>
+
+                    <div class="callout callout-warning">
+                        <div class="callout-title">El error del 90% de los tutoriales</div>
+                        <p>Casi todos los tutoriales enseñan <code>plt.plot()</code>, que es la API de pyplot. Es más corta pero imposible de mantener. Usa <code>fig, ax = plt.subplots()</code> siempre. Tu yo del futuro te lo agradecerá.</p>
+                    </div>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-keyword">import</span> matplotlib.pyplot <span class="token-keyword">as</span> plt
+<span class="token-keyword">import</span> numpy <span class="token-keyword">as</span> np
+
+<span class="token-comment"># ❌ MAL - API pyplot (evita esto)</span>
+plt.<span class="token-function">plot</span>([<span class="token-number">1</span>, <span class="token-number">2</span>, <span class="token-number">3</span>], [<span class="token-number">1</span>, <span class="token-number">4</span>, <span class="token-number">9</span>])
+plt.<span class="token-function">title</span>(<span class="token-string">'Título'</span>)
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># ✅ BIEN - API orientada a objetos</span>
+fig, ax = plt.<span class="token-function">subplots</span>(figsize=(<span class="token-number">10</span>, <span class="token-number">6</span>))
+ax.<span class="token-function">plot</span>([<span class="token-number">1</span>, <span class="token-number">2</span>, <span class="token-number">3</span>], [<span class="token-number">1</span>, <span class="token-number">4</span>, <span class="token-number">9</span>], marker=<span class="token-string">'o'</span>, linewidth=<span class="token-number">2</span>)
+ax.<span class="token-function">set_title</span>(<span class="token-string">'Título Profesional'</span>, fontsize=<span class="token-number">14</span>, fontweight=<span class="token-string">'bold'</span>)
+ax.<span class="token-function">set_xlabel</span>(<span class="token-string">'X'</span>)
+ax.<span class="token-function">set_ylabel</span>(<span class="token-string">'Y'</span>)
+ax.<span class="token-function">grid</span>(<span class="token-keyword">True</span>, alpha=<span class="token-number">0.3</span>)
+plt.<span class="token-function">tight_layout</span>()
+plt.<span class="token-function">show</span>()</code></pre>
+                </section>
+
+                <section id="matplotlib-api">
+                    <h2>API Orientada a Objetos: Ejemplos Prácticos</h2>
+                    
+                    <h3>Gráfico de Líneas Completo</h3>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-comment"># Ejemplo: ventas mensuales de dos productos</span>
+meses = np.<span class="token-function">arange</span>(<span class="token-number">1</span>, <span class="token-number">13</span>)
+producto_a = np.<span class="token-function">array</span>([<span class="token-number">120</span>, <span class="token-number">135</span>, <span class="token-number">148</span>, <span class="token-number">162</span>, <span class="token-number">158</span>, <span class="token-number">172</span>, <span class="token-number">185</span>, <span class="token-number">193</span>, <span class="token-number">187</span>, <span class="token-number">201</span>, <span class="token-number">215</span>, <span class="token-number">228</span>])
+producto_b = np.<span class="token-function">array</span>([<span class="token-number">95</span>, <span class="token-number">102</span>, <span class="token-number">115</span>, <span class="token-number">128</span>, <span class="token-number">142</span>, <span class="token-number">138</span>, <span class="token-number">155</span>, <span class="token-number">168</span>, <span class="token-number">175</span>, <span class="token-number">182</span>, <span class="token-number">195</span>, <span class="token-number">208</span>])
+
+fig, ax = plt.<span class="token-function">subplots</span>(figsize=(<span class="token-number">12</span>, <span class="token-number">7</span>))
+
+<span class="token-comment"># Plotear líneas</span>
+ax.<span class="token-function">plot</span>(meses, producto_a, marker=<span class="token-string">'o'</span>, linewidth=<span class="token-number">2.5</span>, 
+        markersize=<span class="token-number">8</span>, color=<span class="token-string">'#2E86AB'</span>, label=<span class="token-string">'Producto A'</span>)
+ax.<span class="token-function">plot</span>(meses, producto_b, marker=<span class="token-string">'s'</span>, linewidth=<span class="token-number">2.5</span>, 
+        markersize=<span class="token-number">8</span>, color=<span class="token-string">'#A23B72'</span>, label=<span class="token-string">'Producto B'</span>)
+
+<span class="token-comment"># Añadir línea de tendencia para A</span>
+z = np.<span class="token-function">polyfit</span>(meses, producto_a, <span class="token-number">1</span>)
+p = np.<span class="token-function">poly1d</span>(z)
+ax.<span class="token-function">plot</span>(meses, <span class="token-function">p</span>(meses), <span class="token-string">'--'</span>, color=<span class="token-string">'#2E86AB'</span>, 
+        alpha=<span class="token-number">0.5</span>, linewidth=<span class="token-number">1.5</span>, label=<span class="token-string">'Tendencia A'</span>)
+
+<span class="token-comment"># Personalizar</span>
+ax.<span class="token-function">set_title</span>(<span class="token-string">'Ventas Mensuales 2024'</span>, fontsize=<span class="token-number">16</span>, fontweight=<span class="token-string">'bold'</span>, pad=<span class="token-number">20</span>)
+ax.<span class="token-function">set_xlabel</span>(<span class="token-string">'Mes'</span>, fontsize=<span class="token-number">13</span>)
+ax.<span class="token-function">set_ylabel</span>(<span class="token-string">'Unidades Vendidas'</span>, fontsize=<span class="token-number">13</span>)
+ax.<span class="token-function">set_xticks</span>(meses)
+ax.<span class="token-function">set_xticklabels</span>([<span class="token-string">'Ene'</span>, <span class="token-string">'Feb'</span>, <span class="token-string">'Mar'</span>, <span class="token-string">'Abr'</span>, <span class="token-string">'May'</span>, <span class="token-string">'Jun'</span>,
+                      <span class="token-string">'Jul'</span>, <span class="token-string">'Ago'</span>, <span class="token-string">'Sep'</span>, <span class="token-string">'Oct'</span>, <span class="token-string">'Nov'</span>, <span class="token-string">'Dic'</span>])
+ax.<span class="token-function">grid</span>(<span class="token-keyword">True</span>, linestyle=<span class="token-string">'--'</span>, alpha=<span class="token-number">0.3</span>)
+ax.<span class="token-function">legend</span>(loc=<span class="token-string">'upper left'</span>, fontsize=<span class="token-number">11</span>)
+
+<span class="token-comment"># Anotar punto importante</span>
+ax.<span class="token-function">annotate</span>(<span class="token-string">'Pico'</span>, xy=(<span class="token-number">12</span>, <span class="token-number">228</span>), xytext=(<span class="token-number">10</span>, <span class="token-number">240</span>),
+            arrowprops=<span class="token-function">dict</span>(arrowstyle=<span class="token-string">'->'</span>, color=<span class="token-string">'black'</span>),
+            fontsize=<span class="token-number">11</span>, fontweight=<span class="token-string">'bold'</span>)
+
+plt.<span class="token-function">tight_layout</span>()
+plt.<span class="token-function">show</span>()</code></pre>
+
+                    <h3>Gráfico de Barras con Valores</h3>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code>categorias = [<span class="token-string">'Electrónica'</span>, <span class="token-string">'Ropa'</span>, <span class="token-string">'Hogar'</span>, <span class="token-string">'Deportes'</span>]
+ventas = [<span class="token-number">45000</span>, <span class="token-number">32000</span>, <span class="token-number">28000</span>, <span class="token-number">19000</span>]
+colores = [<span class="token-string">'#FF6B6B'</span>, <span class="token-string">'#4ECDC4'</span>, <span class="token-string">'#45B7D1'</span>, <span class="token-string">'#FFA07A'</span>]
+
+fig, ax = plt.<span class="token-function">subplots</span>(figsize=(<span class="token-number">10</span>, <span class="token-number">6</span>))
+bars = ax.<span class="token-function">bar</span>(categorias, ventas, color=colores, edgecolor=<span class="token-string">'black'</span>, linewidth=<span class="token-number">1.2</span>)
+
+<span class="token-comment"># Añadir valores encima</span>
+<span class="token-keyword">for</span> bar <span class="token-keyword">in</span> bars:
+    height = bar.<span class="token-function">get_height</span>()
+    ax.<span class="token-function">text</span>(bar.<span class="token-function">get_x</span>() + bar.<span class="token-function">get_width</span>()/<span class="token-number">2</span>, height,
+            <span class="token-string">f'${height/1000:.0f}K'</span>,
+            ha=<span class="token-string">'center'</span>, va=<span class="token-string">'bottom'</span>, fontsize=<span class="token-number">11</span>, fontweight=<span class="token-string">'bold'</span>)
+
+ax.<span class="token-function">set_title</span>(<span class="token-string">'Ventas por Categoría Q4'</span>, fontsize=<span class="token-number">15</span>, fontweight=<span class="token-string">'bold'</span>)
+ax.<span class="token-function">set_ylabel</span>(<span class="token-string">'Ventas ($)'</span>)
+ax.<span class="token-function">grid</span>(axis=<span class="token-string">'y'</span>, alpha=<span class="token-number">0.3</span>)
+plt.<span class="token-function">tight_layout</span>()
+plt.<span class="token-function">show</span>()</code></pre>
+                </section>
+
+                <section id="matplotlib-subplots">
+                    <h2>Subplots: Dashboard de Múltiples Gráficos</h2>
+                    
+                    <p>
+                        Los subplots son donde Matplotlib brilla. Te permiten crear dashboards completos en una sola figura.
+                    </p>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-comment"># Dashboard 2x2</span>
+np.<span class="token-function">random</span>.<span class="token-function">seed</span>(<span class="token-number">42</span>)
+fig, ((ax1, ax2), (ax3, ax4)) = plt.<span class="token-function">subplots</span>(<span class="token-number">2</span>, <span class="token-number">2</span>, figsize=(<span class="token-number">15</span>, <span class="token-number">10</span>))
+
+<span class="token-comment"># 1. Serie temporal</span>
+dias = np.<span class="token-function">arange</span>(<span class="token-number">1</span>, <span class="token-number">31</span>)
+ventas = <span class="token-number">1000</span> + np.<span class="token-function">random</span>.<span class="token-function">normal</span>(<span class="token-number">0</span>, <span class="token-number">150</span>, <span class="token-number">30</span>).<span class="token-function">cumsum</span>()
+ax1.<span class="token-function">plot</span>(dias, ventas, color=<span class="token-string">'#2E86AB'</span>, linewidth=<span class="token-number">2</span>)
+ax1.<span class="token-function">fill_between</span>(dias, ventas, alpha=<span class="token-number">0.3</span>)
+ax1.<span class="token-function">set_title</span>(<span class="token-string">'Tendencia de Ventas'</span>, fontweight=<span class="token-string">'bold'</span>)
+ax1.<span class="token-function">grid</span>(<span class="token-keyword">True</span>, alpha=<span class="token-number">0.3</span>)
+
+<span class="token-comment"># 2. Pie chart</span>
+categorias = [<span class="token-string">'A'</span>, <span class="token-string">'B'</span>, <span class="token-string">'C'</span>, <span class="token-string">'D'</span>]
+valores = [<span class="token-number">35</span>, <span class="token-number">28</span>, <span class="token-number">22</span>, <span class="token-number">15</span>]
+ax2.<span class="token-function">pie</span>(valores, labels=categorias, autopct=<span class="token-string">'%1.1f%%'</span>,
+       colors=[<span class="token-string">'#FF6B6B'</span>, <span class="token-string">'#4ECDC4'</span>, <span class="token-string">'#45B7D1'</span>, <span class="token-string">'#FFA07A'</span>])
+ax2.<span class="token-function">set_title</span>(<span class="token-string">'Distribución'</span>, fontweight=<span class="token-string">'bold'</span>)
+
+<span class="token-comment"># 3. Histograma</span>
+datos = np.<span class="token-function">random</span>.<span class="token-function">normal</span>(<span class="token-number">100</span>, <span class="token-number">15</span>, <span class="token-number">1000</span>)
+ax3.<span class="token-function">hist</span>(datos, bins=<span class="token-number">30</span>, color=<span class="token-string">'#A23B72'</span>, edgecolor=<span class="token-string">'black'</span>, alpha=<span class="token-number">0.7</span>)
+ax3.<span class="token-function">axvline</span>(datos.<span class="token-function">mean</span>(), color=<span class="token-string">'red'</span>, linestyle=<span class="token-string">'--'</span>, linewidth=<span class="token-number">2</span>)
+ax3.<span class="token-function">set_title</span>(<span class="token-string">'Distribución Normal'</span>, fontweight=<span class="token-string">'bold'</span>)
+ax3.<span class="token-function">grid</span>(<span class="token-keyword">True</span>, alpha=<span class="token-number">0.3</span>)
+
+<span class="token-comment"># 4. Box plot</span>
+datos_box = [np.<span class="token-function">random</span>.<span class="token-function">normal</span>(<span class="token-number">100</span>, <span class="token-number">15</span>, <span class="token-number">100</span>) <span class="token-keyword">for</span> _ <span class="token-keyword">in</span> <span class="token-function">range</span>(<span class="token-number">4</span>)]
+bp = ax4.<span class="token-function">boxplot</span>(datos_box, labels=categorias, patch_artist=<span class="token-keyword">True</span>)
+<span class="token-keyword">for</span> patch, color <span class="token-keyword">in</span> <span class="token-function">zip</span>(bp[<span class="token-string">'boxes'</span>], [<span class="token-string">'#FF6B6B'</span>, <span class="token-string">'#4ECDC4'</span>, <span class="token-string">'#45B7D1'</span>, <span class="token-string">'#FFA07A'</span>]):
+    patch.<span class="token-function">set_facecolor</span>(color)
+ax4.<span class="token-function">set_title</span>(<span class="token-string">'Variabilidad'</span>, fontweight=<span class="token-string">'bold'</span>)
+ax4.<span class="token-function">grid</span>(axis=<span class="token-string">'y'</span>, alpha=<span class="token-number">0.3</span>)
+
+fig.<span class="token-function">suptitle</span>(<span class="token-string">'Dashboard de Análisis'</span>, fontsize=<span class="token-number">16</span>, fontweight=<span class="token-string">'bold'</span>)
+plt.<span class="token-function">tight_layout</span>()
+plt.<span class="token-function">show</span>()</code></pre>
+
+                    <div class="callout callout-tip">
+                        <div class="callout-title">Truco: GridSpec para layouts complejos</div>
+                        <p>Si necesitas subplots de diferentes tamaños, usa <code>plt.GridSpec()</code>:</p>
+                    </div>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-keyword">import</span> matplotlib.gridspec <span class="token-keyword">as</span> gridspec
+
+fig = plt.<span class="token-function">figure</span>(figsize=(<span class="token-number">12</span>, <span class="token-number">8</span>))
+gs = gridspec.<span class="token-function">GridSpec</span>(<span class="token-number">2</span>, <span class="token-number">2</span>, height_ratios=[<span class="token-number">2</span>, <span class="token-number">1</span>])
+
+ax1 = fig.<span class="token-function">add_subplot</span>(gs[<span class="token-number">0</span>, :])  <span class="token-comment"># Gráfico grande arriba</span>
+ax2 = fig.<span class="token-function">add_subplot</span>(gs[<span class="token-number">1</span>, <span class="token-number">0</span>])  <span class="token-comment"># Pequeño abajo izquierda</span>
+ax3 = fig.<span class="token-function">add_subplot</span>(gs[<span class="token-number">1</span>, <span class="token-number">1</span>])  <span class="token-comment"># Pequeño abajo derecha</span></code></pre>
+                </section>
+
+                <section id="matplotlib-personalizacion">
+                    <h2>Personalización Global</h2>
+                    
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-comment"># Configurar estilo global con rcParams</span>
+plt.<span class="token-function">rcParams</span>.<span class="token-function">update</span>({
+    <span class="token-string">'font.size'</span>: <span class="token-number">12</span>,
+    <span class="token-string">'axes.labelsize'</span>: <span class="token-number">13</span>,
+    <span class="token-string">'axes.titlesize'</span>: <span class="token-number">15</span>,
+    <span class="token-string">'figure.figsize'</span>: (<span class="token-number">10</span>, <span class="token-number">6</span>),
+    <span class="token-string">'axes.grid'</span>: <span class="token-keyword">True</span>,
+    <span class="token-string">'grid.alpha'</span>: <span class="token-number">0.3</span>
+})
+
+<span class="token-comment"># Usar estilos predefinidos</span>
+plt.<span class="token-function">style</span>.<span class="token-function">use</span>(<span class="token-string">'seaborn-v0_8-darkgrid'</span>)  <span class="token-comment"># Limpio y profesional</span>
+<span class="token-comment"># Otros: 'ggplot', 'bmh', 'fivethirtyeight'</span></code></pre>
+                </section>
+
+                <section id="matplotlib-ejemplos">
+                    <h2>Ejemplo Real: Dashboard de Temperatura</h2>
+                    
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-keyword">import</span> pandas <span class="token-keyword">as</span> pd
+
+<span class="token-comment"># Generar datos</span>
+np.<span class="token-function">random</span>.<span class="token-function">seed</span>(<span class="token-number">42</span>)
+fechas = pd.<span class="token-function">date_range</span>(<span class="token-string">'2024-01-01'</span>, periods=<span class="token-number">365</span>)
+dias = np.<span class="token-function">arange</span>(<span class="token-number">365</span>)
+temp = <span class="token-number">15</span> + <span class="token-number">10</span> * np.<span class="token-function">sin</span>(<span class="token-number">2</span> * np.<span class="token-function">pi</span> * dias / <span class="token-number">365</span>) + np.<span class="token-function">random</span>.<span class="token-function">normal</span>(<span class="token-number">0</span>, <span class="token-number">3</span>, <span class="token-number">365</span>)
+
+df = pd.<span class="token-function">DataFrame</span>({<span class="token-string">'fecha'</span>: fechas, <span class="token-string">'temperatura'</span>: temp})
+df[<span class="token-string">'mes'</span>] = df[<span class="token-string">'fecha'</span>].<span class="token-function">dt</span>.<span class="token-function">month</span>
+
+<span class="token-comment"># Dashboard</span>
+fig, axes = plt.<span class="token-function">subplots</span>(<span class="token-number">2</span>, <span class="token-number">2</span>, figsize=(<span class="token-number">16</span>, <span class="token-number">10</span>))
+
+<span class="token-comment"># 1. Serie temporal</span>
+axes[<span class="token-number">0</span>, <span class="token-number">0</span>].<span class="token-function">plot</span>(df[<span class="token-string">'fecha'</span>], df[<span class="token-string">'temperatura'</span>], alpha=<span class="token-number">0.7</span>, color=<span class="token-string">'#FF6B6B'</span>)
+axes[<span class="token-number">0</span>, <span class="token-number">0</span>].<span class="token-function">set_title</span>(<span class="token-string">'Temperatura Anual 2024'</span>, fontweight=<span class="token-string">'bold'</span>)
+axes[<span class="token-number">0</span>, <span class="token-number">0</span>].<span class="token-function">set_ylabel</span>(<span class="token-string">'°C'</span>)
+axes[<span class="token-number">0</span>, <span class="token-number">0</span>].<span class="token-function">grid</span>(<span class="token-keyword">True</span>, alpha=<span class="token-number">0.3</span>)
+
+<span class="token-comment"># 2. Histograma</span>
+axes[<span class="token-number">0</span>, <span class="token-number">1</span>].<span class="token-function">hist</span>(temp, bins=<span class="token-number">30</span>, color=<span class="token-string">'#4ECDC4'</span>, edgecolor=<span class="token-string">'black'</span>)
+axes[<span class="token-number">0</span>, <span class="token-number">1</span>].<span class="token-function">axvline</span>(temp.<span class="token-function">mean</span>(), color=<span class="token-string">'red'</span>, linestyle=<span class="token-string">'--'</span>, linewidth=<span class="token-number">2</span>,
+                       label=<span class="token-string">f'Media: {temp.mean():.1f}°C'</span>)
+axes[<span class="token-number">0</span>, <span class="token-number">1</span>].<span class="token-function">set_title</span>(<span class="token-string">'Distribución'</span>, fontweight=<span class="token-string">'bold'</span>)
+axes[<span class="token-number">0</span>, <span class="token-number">1</span>].<span class="token-function">legend</span>()
+axes[<span class="token-number">0</span>, <span class="token-number">1</span>].<span class="token-function">grid</span>(<span class="token-keyword">True</span>, alpha=<span class="token-number">0.3</span>)
+
+<span class="token-comment"># 3. Box plot mensual</span>
+meses_data = [df[df[<span class="token-string">'mes'</span>] == m][<span class="token-string">'temperatura'</span>] <span class="token-keyword">for</span> m <span class="token-keyword">in</span> <span class="token-function">range</span>(<span class="token-number">1</span>, <span class="token-number">13</span>)]
+axes[<span class="token-number">1</span>, <span class="token-number">0</span>].<span class="token-function">boxplot</span>(meses_data, labels=[<span class="token-string">'E'</span>, <span class="token-string">'F'</span>, <span class="token-string">'M'</span>, <span class="token-string">'A'</span>, <span class="token-string">'M'</span>, <span class="token-string">'J'</span>, 
+                                        <span class="token-string">'J'</span>, <span class="token-string">'A'</span>, <span class="token-string">'S'</span>, <span class="token-string">'O'</span>, <span class="token-string">'N'</span>, <span class="token-string">'D'</span>])
+axes[<span class="token-number">1</span>, <span class="token-number">0</span>].<span class="token-function">set_title</span>(<span class="token-string">'Variabilidad Mensual'</span>, fontweight=<span class="token-string">'bold'</span>)
+axes[<span class="token-number">1</span>, <span class="token-number">0</span>].<span class="token-function">set_ylabel</span>(<span class="token-string">'°C'</span>)
+axes[<span class="token-number">1</span>, <span class="token-number">0</span>].<span class="token-function">grid</span>(axis=<span class="token-string">'y'</span>, alpha=<span class="token-number">0.3</span>)
+
+<span class="token-comment"># 4. Heatmap</span>
+pivot = df.<span class="token-function">pivot_table</span>(values=<span class="token-string">'temperatura'</span>, 
+                       index=df[<span class="token-string">'fecha'</span>].<span class="token-function">dt</span>.<span class="token-function">day</span>, 
+                       columns=<span class="token-string">'mes'</span>)
+im = axes[<span class="token-number">1</span>, <span class="token-number">1</span>].<span class="token-function">imshow</span>(pivot, cmap=<span class="token-string">'RdYlBu_r'</span>, aspect=<span class="token-string">'auto'</span>)
+axes[<span class="token-number">1</span>, <span class="token-number">1</span>].<span class="token-function">set_title</span>(<span class="token-string">'Mapa de Calor Mensual'</span>, fontweight=<span class="token-string">'bold'</span>)
+plt.<span class="token-function">colorbar</span>(im, ax=axes[<span class="token-number">1</span>, <span class="token-number">1</span>], label=<span class="token-string">'°C'</span>)
+
+fig.<span class="token-function">suptitle</span>(<span class="token-string">'Análisis de Temperaturas 2024'</span>, fontsize=<span class="token-number">18</span>, fontweight=<span class="token-string">'bold'</span>)
+plt.<span class="token-function">tight_layout</span>()
+plt.<span class="token-function">show</span>()</code></pre>
+                </section>
+
+                <!-- SEABORN -->
+                <section id="seaborn-intro">
+                    <h2>🎨 Seaborn: Matplotlib con Esteroides Estadísticos</h2>
+                    
+                    <p>
+                        Seaborn está construido sobre Matplotlib pero hace que crear gráficos estadísticos sea trivial. Lo que en Matplotlib te tomaría 30 líneas, en Seaborn son 3.
+                    </p>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-keyword">import</span> seaborn <span class="token-keyword">as</span> sns
+<span class="token-keyword">import</span> matplotlib.pyplot <span class="token-keyword">as</span> plt
+
+<span class="token-comment"># Configurar estilo global</span>
+sns.<span class="token-function">set_style</span>(<span class="token-string">'whitegrid'</span>)  <span class="token-comment"># darkgrid, white, dark, ticks</span>
+sns.<span class="token-function">set_palette</span>(<span class="token-string">'husl'</span>)
+
+<span class="token-comment"># Cargar dataset de ejemplo</span>
+tips = sns.<span class="token-function">load_dataset</span>(<span class="token-string">'tips'</span>)
+<span class="token-function">print</span>(tips.<span class="token-function">head</span>())</code></pre>
+
+                    <div class="callout callout-note">
+                        <div class="callout-title">¿Cuándo usar Seaborn vs Matplotlib?</div>
+                        <p><strong>Seaborn:</strong> Visualizaciones estadísticas rápidas (distribuciones, correlaciones, relaciones). <strong>Matplotlib:</strong> Control total, dashboards personalizados, gráficos no estadísticos.</p>
+                    </div>
+                </section>
+
+                <section id="seaborn-distribuciones">
+                    <h2>Visualización de Distribuciones</h2>
+                    
+                    <h3>Histograma + KDE</h3>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code>penguins = sns.<span class="token-function">load_dataset</span>(<span class="token-string">'penguins'</span>)
+
+<span class="token-comment"># Histograma simple con KDE</span>
+sns.<span class="token-function">histplot</span>(data=penguins, x=<span class="token-string">'flipper_length_mm'</span>, 
+            kde=<span class="token-keyword">True</span>, bins=<span class="token-number">30</span>, color=<span class="token-string">'#2E86AB'</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Distribución de Longitud de Aletas'</span>)
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># Comparar distribuciones por categoría</span>
+sns.<span class="token-function">histplot</span>(data=penguins, x=<span class="token-string">'body_mass_g'</span>, hue=<span class="token-string">'species'</span>,
+            kde=<span class="token-keyword">True</span>, bins=<span class="token-number">25</span>, alpha=<span class="token-number">0.6</span>, multiple=<span class="token-string">'layer'</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Masa Corporal por Especie'</span>)
+plt.<span class="token-function">show</span>()</code></pre>
+
+                    <h3>Violin Plot: Distribución + Box Plot</h3>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-comment"># Muestra distribución completa</span>
+sns.<span class="token-function">violinplot</span>(data=penguins, x=<span class="token-string">'species'</span>, y=<span class="token-string">'body_mass_g'</span>,
+              hue=<span class="token-string">'sex'</span>, split=<span class="token-keyword">True</span>, palette=<span class="token-string">'muted'</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Masa Corporal por Especie y Sexo'</span>)
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># Box + Strip para ver puntos individuales</span>
+fig, ax = plt.<span class="token-function">subplots</span>(figsize=(<span class="token-number">12</span>, <span class="token-number">7</span>))
+sns.<span class="token-function">boxplot</span>(data=penguins, x=<span class="token-string">'island'</span>, y=<span class="token-string">'bill_length_mm'</span>, 
+           palette=<span class="token-string">'Set2'</span>, ax=ax)
+sns.<span class="token-function">stripplot</span>(data=penguins, x=<span class="token-string">'island'</span>, y=<span class="token-string">'bill_length_mm'</span>,
+            color=<span class="token-string">'black'</span>, alpha=<span class="token-number">0.3</span>, size=<span class="token-number">3</span>, ax=ax)
+plt.<span class="token-function">show</span>()</code></pre>
+                </section>
+
+                <section id="seaborn-relaciones">
+                    <h2>Visualizar Relaciones</h2>
+                    
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-comment"># Scatter plot con múltiples dimensiones</span>
+sns.<span class="token-function">scatterplot</span>(data=penguins, 
+                x=<span class="token-string">'bill_length_mm'</span>, 
+                y=<span class="token-string">'bill_depth_mm'</span>,
+                hue=<span class="token-string">'species'</span>,      <span class="token-comment"># Color</span>
+                style=<span class="token-string">'island'</span>,     <span class="token-comment"># Forma</span>
+                size=<span class="token-string">'body_mass_g'</span>,  <span class="token-comment"># Tamaño</span>
+                sizes=(<span class="token-number">50</span>, <span class="token-number">400</span>),
+                alpha=<span class="token-number">0.7</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Relación Dimensiones del Pico'</span>)
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># Regresión lineal automática</span>
+sns.<span class="token-function">regplot</span>(data=penguins, x=<span class="token-string">'flipper_length_mm'</span>, y=<span class="token-string">'body_mass_g'</span>,
+           scatter_kws={<span class="token-string">'alpha'</span>: <span class="token-number">0.5</span>}, 
+           line_kws={<span class="token-string">'color'</span>: <span class="token-string">'red'</span>, <span class="token-string">'linewidth'</span>: <span class="token-number">2</span>})
+plt.<span class="token-function">title</span>(<span class="token-string">'Correlación Aleta-Masa'</span>)
+plt.<span class="token-function">show</span>()</code></pre>
+                </section>
+
+                <section id="seaborn-categoricos">
+                    <h2>Datos Categóricos</h2>
+                    
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code>tips = sns.<span class="token-function">load_dataset</span>(<span class="token-string">'tips'</span>)
+
+<span class="token-comment"># Bar plot con intervalos de confianza</span>
+sns.<span class="token-function">barplot</span>(data=tips, x=<span class="token-string">'day'</span>, y=<span class="token-string">'total_bill'</span>, 
+           hue=<span class="token-string">'sex'</span>, palette=<span class="token-string">'Set2'</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Cuenta Promedio por Día'</span>)
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># Count plot: histograma categórico</span>
+sns.<span class="token-function">countplot</span>(data=tips, x=<span class="token-string">'day'</span>, hue=<span class="token-string">'time'</span>, palette=<span class="token-string">'viridis'</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Clientes por Día y Momento'</span>)
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># Point plot: tendencias</span>
+sns.<span class="token-function">pointplot</span>(data=tips, x=<span class="token-string">'day'</span>, y=<span class="token-string">'tip'</span>, hue=<span class="token-string">'time'</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Propina Promedio: Tendencia'</span>)
+plt.<span class="token-function">show</span>()</code></pre>
+                </section>
+
+                <section id="seaborn-matrices">
+                    <h2>Heatmaps: Correlaciones y Matrices</h2>
+                    
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-comment"># Matriz de correlación</span>
+penguins_num = penguins.<span class="token-function">select_dtypes</span>(include=[<span class="token-string">'float64'</span>, <span class="token-string">'int64'</span>])
+correlacion = penguins_num.<span class="token-function">corr</span>()
+
+sns.<span class="token-function">heatmap</span>(correlacion, annot=<span class="token-keyword">True</span>, fmt=<span class="token-string">'.2f'</span>, cmap=<span class="token-string">'coolwarm'</span>,
+           center=<span class="token-number">0</span>, square=<span class="token-keyword">True</span>, linewidths=<span class="token-number">1</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Matriz de Correlación - Pingüinos'</span>)
+plt.<span class="token-function">show</span>()</code></pre>
+
+                    <div class="callout callout-tip">
+                        <div class="callout-title">Truco: Máscara triangular</div>
+                        <p>La matriz de correlación es simétrica. Muestra solo la mitad:</p>
+                    </div>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-keyword">import</span> numpy <span class="token-keyword">as</span> np
+
+mask = np.<span class="token-function">triu</span>(np.<span class="token-function">ones_like</span>(correlacion, dtype=<span class="token-function">bool</span>))
+sns.<span class="token-function">heatmap</span>(correlacion, mask=mask, annot=<span class="token-keyword">True</span>, fmt=<span class="token-string">'.2f'</span>, 
+           cmap=<span class="token-string">'coolwarm'</span>, center=<span class="token-number">0</span>, square=<span class="token-keyword">True</span>)
+plt.<span class="token-function">title</span>(<span class="token-string">'Matriz Triangular'</span>)
+plt.<span class="token-function">show</span>()</code></pre>
+                </section>
+
+                <section id="seaborn-facetgrid">
+                    <h2>FacetGrid: Subplots Automáticos</h2>
+                    
+                    <p>
+                        FacetGrid es magia pura. Crea grids de gráficos automáticamente basados en variables categóricas.
+                    </p>
+
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-comment"># Grid por especie</span>
+g = sns.<span class="token-function">FacetGrid</span>(penguins, col=<span class="token-string">'species'</span>, hue=<span class="token-string">'sex'</span>, height=<span class="token-number">5</span>)
+g.<span class="token-function">map</span>(sns.<span class="token-function">scatterplot</span>, <span class="token-string">'bill_length_mm'</span>, <span class="token-string">'bill_depth_mm'</span>, alpha=<span class="token-number">0.6</span>)
+g.<span class="token-function">add_legend</span>()
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># Grid 2D</span>
+g = sns.<span class="token-function">FacetGrid</span>(tips, col=<span class="token-string">'time'</span>, row=<span class="token-string">'smoker'</span>, height=<span class="token-number">4</span>)
+g.<span class="token-function">map</span>(sns.<span class="token-function">scatterplot</span>, <span class="token-string">'total_bill'</span>, <span class="token-string">'tip'</span>, alpha=<span class="token-number">0.6</span>)
+plt.<span class="token-function">show</span>()</code></pre>
+                </section>
+
+                <section id="seaborn-eda-completo">
+                    <h2>Ejemplo Completo: EDA de Pingüinos</h2>
+                    
+                    <div class="code-toolbar">
+                        <span class="code-lang">python</span>
+                    </div>
+                    <pre><code><span class="token-comment"># Análisis exploratorio completo</span>
+penguins = sns.<span class="token-function">load_dataset</span>(<span class="token-string">'penguins'</span>).<span class="token-function">dropna</span>()
+
+<span class="token-comment"># Información básica</span>
+<span class="token-function">print</span>(<span class="token-string">f"Tamaño: {penguins.shape}"</span>)
+<span class="token-function">print</span>(<span class="token-string">f"
+Especies: {penguins['species'].value_counts()}"</span>)
+<span class="token-function">print</span>(<span class="token-string">f"
+Estadísticas:
+{penguins.describe()}"</span>)
+
+<span class="token-comment"># Dashboard visual</span>
+fig = plt.<span class="token-function">figure</span>(figsize=(<span class="token-number">18</span>, <span class="token-number">12</span>))
+
+<span class="token-comment"># 1. Pairplot (en subplot)</span>
+<span class="token-comment"># Nota: pairplot crea su propia figura, así que lo hacemos aparte</span>
+sns.<span class="token-function">pairplot</span>(penguins, hue=<span class="token-string">'species'</span>, height=<span class="token-number">2.5</span>)
+plt.<span class="token-function">suptitle</span>(<span class="token-string">'Pairplot de Variables'</span>, y=<span class="token-number">1.01</span>)
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># 2. Dashboard de 4 gráficos</span>
+fig, ((ax1, ax2), (ax3, ax4)) = plt.<span class="token-function">subplots</span>(<span class="token-number">2</span>, <span class="token-number">2</span>, figsize=(<span class="token-number">16</span>, <span class="token-number">12</span>))
+
+<span class="token-comment"># Distribución de especies</span>
+species_counts = penguins[<span class="token-string">'species'</span>].<span class="token-function">value_counts</span>()
+ax1.<span class="token-function">pie</span>(species_counts, labels=species_counts.<span class="token-function">index</span>, autopct=<span class="token-string">'%1.1f%%'</span>,
+       colors=[<span class="token-string">'#FF6B6B'</span>, <span class="token-string">'#4ECDC4'</span>, <span class="token-string">'#45B7D1'</span>])
+ax1.<span class="token-function">set_title</span>(<span class="token-string">'Distribución de Especies'</span>, fontweight=<span class="token-string">'bold'</span>)
+
+<span class="token-comment"># Correlaciones</span>
+corr = penguins_num.<span class="token-function">corr</span>()
+sns.<span class="token-function">heatmap</span>(corr, annot=<span class="token-keyword">True</span>, fmt=<span class="token-string">'.2f'</span>, cmap=<span class="token-string">'coolwarm'</span>,
+           center=<span class="token-number">0</span>, ax=ax2, cbar_kws={<span class="token-string">'shrink'</span>: <span class="token-number">0.8</span>})
+ax2.<span class="token-function">set_title</span>(<span class="token-string">'Matriz de Correlación'</span>, fontweight=<span class="token-string">'bold'</span>)
+
+<span class="token-comment"># Masa corporal por especie</span>
+sns.<span class="token-function">violinplot</span>(data=penguins, x=<span class="token-string">'species'</span>, y=<span class="token-string">'body_mass_g'</span>,
+              hue=<span class="token-string">'sex'</span>, split=<span class="token-keyword">True</span>, ax=ax3)
+ax3.<span class="token-function">set_title</span>(<span class="token-string">'Masa por Especie y Sexo'</span>, fontweight=<span class="token-string">'bold'</span>)
+
+<span class="token-comment"># Scatter con especies</span>
+<span class="token-keyword">for</span> species <span class="token-keyword">in</span> penguins[<span class="token-string">'species'</span>].<span class="token-function">unique</span>():
+    data = penguins[penguins[<span class="token-string">'species'</span>] == species]
+    ax4.<span class="token-function">scatter</span>(data[<span class="token-string">'bill_length_mm'</span>], data[<span class="token-string">'bill_depth_mm'</span>],
+               label=species, alpha=<span class="token-number">0.6</span>, s=<span class="token-number">100</span>)
+ax4.<span class="token-function">set_title</span>(<span class="token-string">'Dimensiones del Pico'</span>, fontweight=<span class="token-string">'bold'</span>)
+ax4.<span class="token-function">set_xlabel</span>(<span class="token-string">'Largo (mm)'</span>)
+ax4.<span class="token-function">set_ylabel</span>(<span class="token-string">'Profundidad (mm)'</span>)
+ax4.<span class="token-function">legend</span>()
+ax4.<span class="token-function">grid</span>(<span class="token-keyword">True</span>, alpha=<span class="token-number">0.3</span>)
+
+fig.<span class="token-function">suptitle</span>(<span class="token-string">'EDA Completo - Pingüinos Palmer'</span>, fontsize=<span class="token-number">18</span>, fontweight=<span class="token-string">'bold'</span>)
+plt.<span class="token-function">tight_layout</span>()
+plt.<span class="token-function">show</span>()
+
+<span class="token-comment"># Insights</span>
+<span class="token-function">print</span>(<span class="token-string">"
+=== INSIGHTS ==="</span>)
+<span class="token-function">print</span>(<span class="token-string">f"Especie más común: {species_counts.idxmax()}"</span>)
+<span class="token-function">print</span>(<span class="token-string">f"Correlación más fuerte: flipper-masa ({corr.loc['flipper_length_mm', 'body_mass_g']:.3f})"</span>)
+<span class="token-function">print</span>(<span class="token-string">f"Masa promedio: {penguins['body_mass_g'].mean():.0f}g"</span>)</code></pre>
+
+                    <div class="callout callout-note">
+                        <div class="callout-title">Este es el workflow estándar de EDA</div>
+                        <p>1) Cargar y explorar datos, 2) Visualizar distribuciones, 3) Analizar correlaciones, 4) Identificar patrones por grupos, 5) Extraer insights. Domina este flujo y serás imparable.</p>
+                    </div>
+                </section>
+
+
+
                 <!-- Page Navigation -->
                 <nav class="page-nav">
                     <a href="#introduccion" class="page-nav-item">
